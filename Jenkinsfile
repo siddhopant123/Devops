@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    triggers {
+        githubPush()  // This trigger ensures the pipeline runs on every push to the repository
+    }
+
     stages {
         stage('Build') {
             steps {
