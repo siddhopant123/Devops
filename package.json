@@ -1,18 +1,20 @@
 {
-  "name": "your-application-name",
+  "name": "my-react-app",
   "version": "1.0.0",
-  "description": "A brief description of your application",
+  "description": "A simple React application",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "build": "your-build-command",
-    "test": "your-test-command",
-    "deploy": "your-deploy-command"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "deploy": "echo 'Deploying the application...'"
   },
-  "author": "Your Name",
+  "author": "John Doe",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.17.1"
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-scripts": "4.0.3"
   },
   "devDependencies": {
     "jest": "^26.6.3"
