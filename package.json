@@ -12,11 +12,9 @@
   "author": "Your Name",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.17.1", // Example dependency, replace with your actual dependencies
-    // Add other dependencies here
+    "express": "^4.17.1"
   },
   "devDependencies": {
-    "jest": "^26.6.3" // Example dev dependency, replace with your actual dev dependencies
-    // Add other dev dependencies here
+    "jest": "^26.6.3"
   }
 }
