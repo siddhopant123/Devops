@@ -13,7 +13,6 @@ pipeline {
         stage('Checkout') {
             steps {
                 script {
-                    // Checkout the latest code from the GitHub repository
                     echo 'Checking out the repository...'
                     checkout scm
                     echo 'Repository checked out successfully'
@@ -26,6 +25,7 @@ pipeline {
                 script {
                     echo 'Verifying presence of package.json...'
                     sh 'ls -la'
+                    sh 'if [ ! -f package.json ]; then echo "package.json not found"; exit 1; fi'
                     sh 'cat package.json'
                 }
             }
