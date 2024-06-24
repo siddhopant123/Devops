@@ -16,6 +16,7 @@ pipeline {
                     echo 'Checking out the repository...'
                     checkout scm
                     echo 'Repository checked out successfully'
+                    sh 'ls -la' // List contents of the workspace root
                 }
             }
         }
