@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        GIT_CREDENTIALS_ID = 'github-credentials' // Use the ID of the credentials you set up in Jenkins
+        GIT_CREDENTIALS_ID = 'github-credentials' // Replace with the ID of the credentials you set up in Jenkins
         REPO_URL = 'https://github.com/siddhopant123/Devops.git'
     }
 
@@ -24,18 +24,29 @@ pipeline {
             steps {
                 script {
                     // Configure Git user
-                    sh 'git config user.email "your-email@example.com"'
-                    sh 'git config user.name "Your Name"'
+                    sh 'git config user.email "shelkesiddhopant@gmail.com"' // Replace with your Git email
+                    sh 'git config user.name "Siddhopant123"' // Replace with your Git name
 
                     // Checkout the main branch
                     sh 'git checkout main'
 
                     // Merge siddhu branch into main branch
-                    sh 'git merge origin/siddhu'
+                    sh 'git merge origin/siddhu || true' // Use '|| true' to prevent the pipeline from failing
 
-                    // Push the changes to the main branch
-                    withCredentials([usernamePassword(credentialsId: env.GIT_CREDENTIALS_ID, passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
-                        sh('git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/siddhopant123/Devops.git main')
+                    // Check for merge conflicts
+                    def mergeConflict = sh(script: 'git diff --name-only --diff-filter=U', returnStdout: true).trim()
+
+                    if (mergeConflict) {
+                        echo "Merge conflicts detected in the following files:\n${mergeConflict}"
+
+                        // Handle the merge conflicts here
+                        // Example: abort the build and notify
+                        error "Merge conflicts detected. Please resolve them manually."
+                    } else {
+                        // Push the changes to the main branch
+                        withCredentials([usernamePassword(credentialsId: env.GIT_CREDENTIALS_ID, passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
+                            sh 'git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/siddhopant123/Devops.git main'
+                        }
                     }
                 }
             }
