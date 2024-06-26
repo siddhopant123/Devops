@@ -2,25 +2,40 @@ pipeline {
     agent any
 
     environment {
+<<<<<<< HEAD
         NODE_ENV = 'production'
     }
 
     triggers {
         githubPush()
+=======
+        GIT_CREDENTIALS_ID = 'github-credentials' // Replace with the ID of the credentials you set up in Jenkins
+        REPO_URL = 'https://github.com/siddhopant123/Devops.git'
+    }
+
+    triggers {
+        githubPush()  // Trigger the pipeline on GitHub push events
+>>>>>>> 1a8b4ea235d4dd9095b4858d2cc13febecae221d
     }
 
     stages {
         stage('Checkout') {
             steps {
                 script {
+<<<<<<< HEAD
                     echo 'Checking out the repository...'
                     checkout scm
                     echo 'Repository checked out successfully'
                     sh 'ls -la' // List contents of the workspace root
+=======
+                    // Checkout the siddhu branch
+                    checkout([$class: 'GitSCM', branches: [[name: '*/siddhu']], userRemoteConfigs: [[url: env.REPO_URL, credentialsId: env.GIT_CREDENTIALS_ID]]])
+>>>>>>> 1a8b4ea235d4dd9095b4858d2cc13febecae221d
                 }
             }
         }
 
+<<<<<<< HEAD
         stage('Verify Package.json') {
             steps {
                 script {
@@ -67,12 +82,43 @@ pipeline {
                         scp -r ./build user@your-server:/path/to/deploy
                         ssh user@your-server 'pm2 restart your-app'
                     '''
+=======
+        stage('Merge to Main') {
+            steps {
+                script {
+                    // Configure Git user
+                    sh 'git config user.email "siddhopant123@example.com"' // Replace with your Git email
+                    sh 'git config user.name "Siddhopant123"' // Replace with your Git name
+
+                    // Checkout the main branch
+                    sh 'git checkout main'
+
+                    // Merge siddhu branch into main branch
+                    sh 'git merge origin/siddhu || true' // Use '|| true' to prevent the pipeline from failing
+
+                    // Check for merge conflicts
+                    def mergeConflict = sh(script: 'git diff --name-only --diff-filter=U', returnStdout: true).trim()
+
+                    if (mergeConflict) {
+                        echo "Merge conflicts detected in the following files:\n${mergeConflict}"
+
+                        // Handle the merge conflicts here
+                        // Example: abort the build and notify
+                        error "Merge conflicts detected. Please resolve them manually."
+                    } else {
+                        // Push the changes to the main branch
+                        withCredentials([usernamePassword(credentialsId: env.GIT_CREDENTIALS_ID, passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
+                            sh 'git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/siddhopant123/Devops.git main'
+                        }
+                    }
+>>>>>>> 1a8b4ea235d4dd9095b4858d2cc13febecae221d
                 }
             }
         }
     }
 
     post {
+<<<<<<< HEAD
         always {
             script {
                 echo 'Cleaning up workspace...'
@@ -88,6 +134,13 @@ pipeline {
             script {
                 echo 'Build or deployment failed!'
             }
+=======
+        success {
+            echo 'Merge completed successfully!'
+        }
+        failure {
+            echo 'Merge failed!'
+>>>>>>> 1a8b4ea235d4dd9095b4858d2cc13febecae221d
         }
     }
 }
